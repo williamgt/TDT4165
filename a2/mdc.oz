@@ -31,3 +31,17 @@ declare fun {Tokenize Lexemes}
 end
 
 {Show {Tokenize {Lex "1 2 + 3 *"}}}
+
+
+%Interprets a list of tokenized lexemes
+declare fun {Interpret Tokens} Stack=[] in
+    case Tokens of Head|Tail then
+        if Head then
+            ifbody
+        else
+            elsebody
+        end
+    [] nil then
+        nil
+    end
+end
