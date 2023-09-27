@@ -7,8 +7,8 @@ declare fun {Length List}
   end
 end
 
-{System.showInfo 'The length is:'}
-{System.showInfo {Length [1 2 3]}}
+/* {System.showInfo 'The length is:'}
+{System.showInfo {Length [1 2 3]}} */
 
 %b)
 declare Take 
@@ -27,8 +27,8 @@ fun {Take List Count} Size={Length List} NewCount=Count-1 in
   end
 end
 
-{System.showInfo 'The new list after taking is:'}
-{Show {Take [1 2 3] 4}} %NB! Can't print lists in System.showInfo
+/* {System.showInfo 'The new list after taking is:'}
+{Show {Take [1 2 3] 4}} %NB! Can't print lists in System.showInfo */
 
 
 %c)
@@ -46,8 +46,8 @@ fun {Drop List Count} Size={Length List} in
   end
 end
 
-{System.showInfo 'The new list after dropping is:'}
-{Show {Drop [1 2 3] 2}} 
+/* {System.showInfo 'The new list after dropping is:'}
+{Show {Drop [1 2 3] 2}}  */
 
 %d)
 declare
@@ -59,8 +59,8 @@ fun {Append List1 List2}
    end
 end
 
-{System.showInfo 'Appending [1 2] and [3 4]:'}
-{Show {Append [1 2] [3 4]}} 
+/* {System.showInfo 'Appending [1 2] and [3 4]:'}
+{Show {Append [1 2] [3 4]}}  */
 
 %e)
 declare
@@ -76,10 +76,10 @@ fun {Member List Element}
   end
 end
 
-{System.showInfo 'Element 3 is in [1 2 3]?'}
+/* {System.showInfo 'Element 3 is in [1 2 3]?'}
 {Show {Member [1 2 3] 3}}
 {System.showInfo 'Element 3 is in [1 2 0]?'}
-{Show {Member [1 2 0] 3}}
+{Show {Member [1 2 0] 3}} */
 
 %f)
 declare 
@@ -105,5 +105,5 @@ fun {Position List Element}
   end
 end
 
-{System.showInfo 'Index of 3 in [1 2 3 4 3] is'}
-{System.showInfo {Position [1 2 3 4 3] 3}}
+/* {System.showInfo 'Index of 3 in [1 2 3 4 3] is'}
+{System.showInfo {Position [1 2 3 4 3] 3}} */

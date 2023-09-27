@@ -1,3 +1,5 @@
+\insert 'C:/Datateknologi/s1/prog/TDT4165/a1/List.oz'
+
 %Takes a string as input and outputs an array of lexemes represented as ASCII values
 declare fun {Lex Input}
     {String.tokens Input & } %Create tokens of the input split on space
