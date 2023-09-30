@@ -5,21 +5,18 @@ declare fun {Lex Input}
     {String.tokens Input & } %Create tokens of the input split on space
 end
 
-{System.showInfo 'The string "1 2 + 3 *" gets split to:'}
-{Show {Lex "1 2 + 3 *"}}
+{System.showInfo 'The string "10 2 + 3 *" gets split to:'}
+{Show {Lex "10 2 + 3 *"}}
 
 
 %Puts each lexeme into a record
 declare fun {Tokenize Lexemes}
     case Lexemes of Head|Tail then
-       /*  if {Char.isDigit Head.1} then
-            % Handle multi-digit numbers
-            local MultiDigitLexeme in
-                MultiDigitLexeme = {CollectMultiDigitLexeme Head Tail}
-                number(MultiDigitLexeme) | {Tokenize Tail}
-            end */
-        if {Char.isDigit Head.1} then
-            number(Head.1 - 48) | {Tokenize Tail} %Ez conversion from char to number by subtracting 48
+        if {String.isInt Head} then
+            local Num in
+                {String.toInt Head Num} 
+                number(Num) | {Tokenize Tail} %Ez conversion from char to number by subtracting 48
+            end
         elseif Head.1 == 47 then %ASCII for '/' is 47
             operator(type:divide) | {Tokenize Tail}
         elseif Head.1 == 43 then %ASCII for '+' is 43
@@ -44,20 +41,7 @@ declare fun {Tokenize Lexemes}
      end
 end
 
-/* % Helper function to collect multi-digit lexemes
-fun {CollectMultiDigitLexeme Head Tail}
-    case Tail of Digit|RestTail then
-        if {Char.isDigit Digit.1} then
-            {CollectMultiDigitLexeme Head|Digit RestTail}
-        else
-            Head
-        end
-    [] _ then
-        Head
-    end
-end */
-
-{Show {Tokenize {Lex "1 2 + 3 *"}}}
+{Show {Tokenize {Lex "10 2 + 3 *"}}}
 
 
 declare fun {Interpret Tokens}
