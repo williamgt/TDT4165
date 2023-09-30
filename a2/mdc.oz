@@ -134,12 +134,9 @@ declare fun {ExpressionTree Tokens}
         fun {ExpressionTreeInternal Tokens ExpressionStack}
             %Got a number, Push it to ExpressionStack and remove Token
             case Tokens of number(N)|Tail then
-                {System.showInfo "Got a number"}
                 {ExpressionTreeInternal {Pop Tokens} {Push ExpressionStack N}}
             %Got an operator, Pop two numbers from the Expression stack and Push the currect operation and numbers to ExpressionStack and remove Token
             [] operator(type:Op)|Tail then
-                {System.showInfo "Found an operator"}
-                {Show Op}
                 local Num1 Num2 DoublePoppedStack in
                     Num1 = {Peek ExpressionStack}
                     Num2 = {Peek {Pop ExpressionStack}}
