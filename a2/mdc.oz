@@ -121,10 +121,10 @@ declare fun {Interpret Tokens}
     end
 end
 
-%{Show {Interpret {Tokenize {Lex "1 2 3 +"}}}}
-%{Show {Interpret {Tokenize {Lex "1 2 p 3 +"}}}}
-%{Show {Interpret {Tokenize {Lex "1 2 3 + d"}}}}
-%{Show {Interpret {Tokenize {Lex "1 2 3 + i"}}}}
+{Show {Interpret {Tokenize {Lex "1 2 3 +"}}}}
+{Show {Interpret {Tokenize {Lex "1 2 p 3 +"}}}}
+{Show {Interpret {Tokenize {Lex "1 2 3 + d"}}}}
+{Show {Interpret {Tokenize {Lex "1 2 3 + i"}}}}
 {Show {Interpret {Tokenize {Lex "1 2 3 + c"}}}}
 
 
