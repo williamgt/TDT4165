@@ -1,5 +1,7 @@
 \insert 'C:/Datateknologi/s1/prog/TDT4165/a1/List.oz'
 
+/*** TASK 1 ***/
+
 %Takes a string as input and outputs an array of lexemes represented as ASCII values
 declare fun {Lex Input}
     {String.tokens Input & } %Create tokens of the input split on space
@@ -128,7 +130,8 @@ end
 {Show {Interpret {Tokenize {Lex "1 2 3 + c"}}}}
 
 
-%Copnverts postfix notation into an expression tree, assumes valid Tokens and no commands other than arithmetic ones 
+/*** TASK 2 ***/
+%Converts postfix notation into an expression tree, assumes valid Tokens and no commands other than arithmetic ones 
 declare fun {ExpressionTree Tokens}
     local 
         fun {ExpressionTreeInternal Tokens ExpressionStack}
@@ -136,13 +139,14 @@ declare fun {ExpressionTree Tokens}
             case Tokens of number(N)|Tail then
                 {ExpressionTreeInternal {Pop Tokens} {Push ExpressionStack N}}
             %Got an operator, Pop two numbers from the Expression stack and Push the currect operation and numbers to ExpressionStack and remove Token
+            %The other tokens that are subsequently found will wrap the ones preceeding it with a number
             [] operator(type:Op)|Tail then
                 local Num1 Num2 DoublePoppedStack in
                     Num1 = {Peek ExpressionStack}
                     Num2 = {Peek {Pop ExpressionStack}}
                     DoublePoppedStack = {Pop {Pop ExpressionStack}}
                     
-                    {ExpressionTreeInternal {Pop Tokens} {Push DoublePoppedStack Op(Num1 Num2)}}
+                    {ExpressionTreeInternal {Pop Tokens} {Push DoublePoppedStack Op(Num1 Num2)}} %An expression of type Exp(Num Num) is created first, then Exp(Num Exp) subsequently
                 end
             %At the end of Tokens, return the only element that should be left in ExpressionStack 
             [] nil then
