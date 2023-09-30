@@ -28,6 +28,8 @@ declare fun {Tokenize Lexemes}
             operator(type:minus) | {Tokenize Tail}
         elseif Head.1 == 42 then %ASCII for '*' is 42
             operator(type:multiply) | {Tokenize Tail}
+        elseif Head.1 == 112 then %ASCII for 'p' is 112
+            command(print) | {Tokenize Tail}
         else
             {System.showInfo "Invalid value!!!"}
         end
@@ -94,9 +96,15 @@ declare fun {Interpret Tokens}
                 {Interp {Pop Tokens} {Push Stack N}} */ 
             %Matchin on Head|Tail, could either be a number or command
             [] Head|Tail then %Currently using this for number matching, is suboptimal, would like to use [] number(num) of some sorts
-                {Show {GetValue number(N)}}
-                {System.showInfo "Matched Heal|Tail"}
-                {Interp {Pop Tokens} {Push Stack Head.1}} %Remove value from tokens and push it to the stack
+
+                %The next command was a print, show the stack and continue calculating
+                if Head.1 == print then
+                    {Show Stack}
+                    {Interp {Pop Tokens} Stack} %Remove p from tokens and send current stack to next iteration
+                %The next command was a number, handle correctly
+                else
+                    {Interp {Pop Tokens} {Push Stack Head.1}} %Remove value from tokens and push it to the stack
+                end
             %End of list, return the current stack
             [] nil then 
                 Stack
@@ -108,4 +116,6 @@ declare fun {Interpret Tokens}
     end
 end
 
-{Show {Interpret {Tokenize {Lex "1 2 3 +"}}}}
+%{Show {Interpret {Tokenize {Lex "1 2 3 +"}}}}
+{Show {Interpret {Tokenize {Lex "1 2 p 3 +"}}}}
+
