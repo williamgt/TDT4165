@@ -32,6 +32,8 @@ declare fun {Tokenize Lexemes}
             command(print) | {Tokenize Tail}
         elseif Head.1 == 100 then %ASCII for 'd' is 100
             command(duplicate) | {Tokenize Tail}
+        elseif Head.1 == 105 then %ASCII for 'i' is 105
+            command(invert) | {Tokenize Tail}
         else
             {System.showInfo "Invalid value!!!"}
         end
@@ -104,9 +106,16 @@ declare fun {Interpret Tokens}
                 %The next command was a print, show the stack and continue calculating
                 if Head.1 == print then
                     {Show Stack}
-                    {Interp {Pop Tokens} Stack} %Remove p from tokens and send current stack to next iteration
+                    {Interp {Pop Tokens} Stack}
+                %Dupliacte the top element of the stack
                 elseif Head.1 == duplicate then
                     {Interp {Pop Tokens} {Push Stack Stack.1}}
+                elseif Head.1 == invert then
+                    local ToBeInverted NewStack in
+                        ToBeInverted = ~ {Peek Stack}
+                        NewStack = {Push {Pop Stack} ToBeInverted}
+                        {Interp {Pop Tokens} NewStack}
+                    end
                 %The next command was a number, handle correctly
                 else
                     {Interp {Pop Tokens} {Push Stack Head.1}} %Remove value from tokens and push it to the stack
@@ -124,4 +133,5 @@ end
 
 %{Show {Interpret {Tokenize {Lex "1 2 3 +"}}}}
 %{Show {Interpret {Tokenize {Lex "1 2 p 3 +"}}}}
-{Show {Interpret {Tokenize {Lex "1 2 3 + d"}}}}
+%{Show {Interpret {Tokenize {Lex "1 2 3 + d"}}}}
+{Show {Interpret {Tokenize {Lex "1 2 3 + i"}}}}
