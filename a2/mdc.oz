@@ -30,6 +30,8 @@ declare fun {Tokenize Lexemes}
             operator(type:multiply) | {Tokenize Tail}
         elseif Head.1 == 112 then %ASCII for 'p' is 112
             command(print) | {Tokenize Tail}
+        elseif Head.1 == 100 then %ASCII for 'd' is 100
+            command(duplicate) | {Tokenize Tail}
         else
             {System.showInfo "Invalid value!!!"}
         end
@@ -90,17 +92,21 @@ declare fun {Interpret Tokens}
                     Ans = Num1 / Num2
                     {Interp {Pop Tokens} {Push {Pop PoppedStack} Ans}} %Remove the operator from Tokens and push the Ans to the dobbely popped Stack
                 end
+
             %Could not get this to work
             /* [] number(N) then
                 {System.showInfo "Matched number()"} 
                 {Interp {Pop Tokens} {Push Stack N}} */ 
+
             %Matchin on Head|Tail, could either be a number or command
-            [] Head|Tail then %Currently using this for number matching, is suboptimal, would like to use [] number(num) of some sorts
+            [] Head|Tail then %Currently using this for number and command matching, is suboptimal, would like to use [] tuple(value) of some sorts
 
                 %The next command was a print, show the stack and continue calculating
                 if Head.1 == print then
                     {Show Stack}
                     {Interp {Pop Tokens} Stack} %Remove p from tokens and send current stack to next iteration
+                elseif Head.1 == duplicate then
+                    {Interp {Pop Tokens} {Push Stack Stack.1}}
                 %The next command was a number, handle correctly
                 else
                     {Interp {Pop Tokens} {Push Stack Head.1}} %Remove value from tokens and push it to the stack
@@ -117,5 +123,5 @@ declare fun {Interpret Tokens}
 end
 
 %{Show {Interpret {Tokenize {Lex "1 2 3 +"}}}}
-{Show {Interpret {Tokenize {Lex "1 2 p 3 +"}}}}
-
+%{Show {Interpret {Tokenize {Lex "1 2 p 3 +"}}}}
+{Show {Interpret {Tokenize {Lex "1 2 3 + d"}}}}
