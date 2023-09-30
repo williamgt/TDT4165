@@ -137,8 +137,13 @@ declare
 fun {Pop List}
   case List of _|Tail then
     Tail
+/*   [] nil then
+    nil */
   end
 end
 
 /* {System.showInfo 'Popping [1 2 3]'}
-{Show {Pop [1 2 3]}} */
+local List=[1 2 3] in
+  {Show {Pop List}}
+  {Show {Pop {Pop List}}}
+end */
