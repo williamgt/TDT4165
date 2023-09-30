@@ -43,7 +43,7 @@ end
 
 {Show {Tokenize {Lex "10 2 + 3 *"}}}
 
-
+%The interpreting part of the calculator, manipulates a stack that is ultimately returned
 declare fun {Interpret Tokens}
       %Declaring a local functino that keepds track of current position
     local 
@@ -127,3 +127,35 @@ end
 %{Show {Interpret {Tokenize {Lex "1 2 3 + i"}}}}
 {Show {Interpret {Tokenize {Lex "1 2 3 + c"}}}}
 
+
+%Copnverts postfix notation into an expression tree, assumes valid Tokens and no commands other than arithmetic ones 
+declare fun {ExpressionTree Tokens}
+    local 
+        fun {ExpressionTreeInternal Tokens ExpressionStack}
+            %Got a number, Push it to ExpressionStack and remove Token
+            case Tokens of number(N)|Tail then
+                {System.showInfo "Got a number"}
+                {ExpressionTreeInternal {Pop Tokens} {Push ExpressionStack N}}
+            %Got an operator, Pop two numbers from the Expression stack and Push the currect operation and numbers to ExpressionStack and remove Token
+            [] operator(type:Op)|Tail then
+                {System.showInfo "Found an operator"}
+                {Show Op}
+                local Num1 Num2 DoublePoppedStack in
+                    Num1 = {Peek ExpressionStack}
+                    Num2 = {Peek {Pop ExpressionStack}}
+                    DoublePoppedStack = {Pop {Pop ExpressionStack}}
+                    
+                    {ExpressionTreeInternal {Pop Tokens} {Push DoublePoppedStack Op(Num1 Num2)}}
+                end
+            %At the end of Tokens, return the only element that should be left in ExpressionStack 
+            [] nil then
+                ExpressionStack.1
+            end
+        end
+    in
+        {ExpressionTreeInternal Tokens nil}
+    end
+end
+
+%{Show {ExpressionTree [number(2) number(3) operator(type:plus) number(5) operator(type:divide)]}}
+{Show {ExpressionTree {Tokenize {Lex "3 10 9 * - 7 +"}}}}
