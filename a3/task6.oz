@@ -15,7 +15,7 @@ declare fun {SumOptimized List Acc}
   case List of nil then %At the end of list
     Acc %Return the accumulated value when at end of list
   [] Head|Tail then %All other cases
-    {Sum Tail (Acc + Head)} %Tail recursive call
+    {SumOptimized Tail (Acc + Head)} %Tail recursive call
   end
 end
 
