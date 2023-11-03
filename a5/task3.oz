@@ -6,32 +6,33 @@ declare ListDivisorsOf ListPrimesUntil
 
 %a
 fun {ListDivisorsOf Number} ListDivisorsOfHelper Enums in 
-    thread Enums = {Enumerate 1 Number} end %Getting numbers from specified range
-    ListDivisorsOfHelper = fun {$ Next List} CalcNext in %Helper function for finding list of divisors of Number
-        thread CalcNext = Next + 1 end %Calling thread to calculate next to check, this makes it a stream??????????
+    Enums = {Enumerate 1 Number} %Getting stream of numbers from specified range
+
+    ListDivisorsOfHelper = fun {$ Next List}  %Helper function for finding list of divisors of Number
         case List of nil then
             nil
         [] H|T then 
             if Number mod H == 0 then
-                H | {ListDivisorsOfHelper CalcNext T}
+                H | {ListDivisorsOfHelper (Next+1) T}
             else
-                {ListDivisorsOfHelper CalcNext T}
+                {ListDivisorsOfHelper (Next+1) T}
             end
         end
     end
-    {ListDivisorsOfHelper 1 Enums}
+    thread {ListDivisorsOfHelper 1 Enums} end %Wrapping helper func call in thread for stream properties
 end
 
-{System.show {ListDivisorsOf 5}}
+{System.show {List.take {ListDivisorsOf 5} 2}}
 
 %b
 fun {ListPrimesUntil N} ListPrimesUntilHelper Enums in 
-    thread Enums = {Enumerate 1 N} end %Getting numbers from specified range
-    ListPrimesUntilHelper = fun {$ List} Divisors in
+    Enums = {Enumerate 1 N}  %Getting stream of numbers from specified range
+    
+    ListPrimesUntilHelper = fun {$ List} Divisors in %Helper function for finding list of primes up to N
         case List of nil then
             nil
         [] H|T then
-            thread Divisors = {ListDivisorsOf H} end
+            Divisors = {ListDivisorsOf H}
             if {Length Divisors} == 2 then %Hacky way, but kind of works: only two elements should be in list: 1 and itself
                 H | {ListPrimesUntilHelper T}
             else 
@@ -39,7 +40,7 @@ fun {ListPrimesUntil N} ListPrimesUntilHelper Enums in
             end
         end
     end
-    {ListPrimesUntilHelper Enums}
+    thread {ListPrimesUntilHelper Enums} end %Wrapping helper func call in thread for stream properties
 end
 
-{System.show {ListPrimesUntil 10}}
+{System.show {List.take {ListPrimesUntil 10} 4}}

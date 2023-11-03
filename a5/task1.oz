@@ -14,12 +14,16 @@ local A=10 B=20 C=30 in
     {System.show C * 100}
 end
 /*
-The sequence of numbers that are printed are 30, 3000, 10, 20, 200, 100
+The sequence of numbers that are printed are 30, 3000, 10, 20, 200, 100 on my pc 
 */  
 
 %b
 /*
-TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO
+First, the main thread is instantiated and prints C. Then two new threads are created.
+From here its a matter of the scheduler for which thread is executed next.
+That means which values are printed after the first print statement is hard to predict,
+unless one has direct access to how the scheduler is implemented. And the printing sequence
+is therefore nondeterministic after the first print, making predicting the output arbitrary.
 */
 
 %c
