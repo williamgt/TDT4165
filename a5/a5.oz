@@ -1,4 +1,11 @@
-\insert 'C:/Datateknologi/s1/prog/TDT4165/a1/List.oz'
+/* Have this helper function here for ease of grading */
+declare fun {Length List}
+    case List of nil then %At the end of list
+        0
+    [] Head|Tail then %All other cases
+        1 + {Length Tail}
+    end
+end
 
 /* TASK 1*/
 %a
